@@ -1,4 +1,3 @@
-import './Stat.css'
 import {useExpensesList} from "../../hooks/expenses.hooks.ts";
 import {useEffect} from "react";
 

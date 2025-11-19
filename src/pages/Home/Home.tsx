@@ -1,5 +1,4 @@
 import {useEffect } from 'react'
-import './Home.css'
 import {useTagsList} from "../../hooks/tag.hooks.ts";
 import { map } from 'lodash';
 
