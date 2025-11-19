@@ -1,23 +1,23 @@
-import {useEffect } from 'react'
-import {useTagsList} from "../../hooks/tag.hooks.ts";
+import { useEffect } from 'react';
 import { map } from 'lodash';
+import { useTagsList } from '@src/hooks/tag.hooks.ts';
 
 function Home() {
-    const { tags, getTagsList } = useTagsList()
+  const { tags, getTagsList } = useTagsList();
 
-    useEffect(() => {
-        (async () => await getTagsList())();
-    }, [getTagsList])
+  useEffect(() => {
+    (async () => await getTagsList())();
+  }, [getTagsList]);
 
-    console.log(tags);
+  console.log(tags);
 
   return (
     <>
-        {map(tags, (tag) => (
-            <div key={tag.id}>{tag.name}</div>
-        ))}
+      {map(tags, (tag) => (
+        <div key={tag.id}>{tag.name}</div>
+      ))}
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;

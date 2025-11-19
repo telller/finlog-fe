@@ -1,7 +1,7 @@
-import type {BaseEntity} from "./common.ts";
+import type { BaseEntity } from './common.ts';
 
-export interface Tag extends BaseEntity{
-    name: string;
-    order: number;
-    color: string;
+export interface Tag extends BaseEntity {
+  name: string;
+  order: number;
+  color: string;
 }
