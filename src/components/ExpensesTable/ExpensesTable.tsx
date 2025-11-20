@@ -50,6 +50,7 @@ const ExpensesTable = ({ expenses, tags }: ExpensesTableProps) => {
       pagination={false}
       columns={columns}
       size="small"
+      rowKey="id"
     />
   );
 };

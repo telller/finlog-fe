@@ -46,6 +46,7 @@ const MainLayout = () => {
             <div
               className={cl('menuItem', { active: route === location.pathname })}
               onClick={() => handleMenuClick(route)}
+              key={route}
             >
               {label}
             </div>
