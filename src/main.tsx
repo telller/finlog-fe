@@ -5,6 +5,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import localeData from 'dayjs/plugin/localeData';
 import { createRoot } from 'react-dom/client';
 import { StrictMode } from 'react';
+import utc from 'dayjs/plugin/utc';
 import dayjs from 'dayjs';
 import { MainLayout } from '@src/components';
 import { Home, Stat } from '@src/pages';
@@ -15,6 +16,7 @@ dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(weekOfYear);
 dayjs.extend(localeData);
+dayjs.extend(utc);
 
 const router = createBrowserRouter([
   {

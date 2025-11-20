@@ -43,7 +43,15 @@ const ExpensesTable = ({ expenses, tags }: ExpensesTableProps) => {
       render: (description: string) => <TruncatedText text={description} />,
     },
   ];
-  return <Table dataSource={expenses.items} columns={columns} size="small" />;
+  return (
+    <Table
+      dataSource={expenses.items}
+      scroll={{ y: 500 }}
+      pagination={false}
+      columns={columns}
+      size="small"
+    />
+  );
 };
 
 export default ExpensesTable;

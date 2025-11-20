@@ -3,6 +3,7 @@ import { useTagsList } from '@src/hooks/tag.hooks.ts';
 import { PlusOutlined } from '@ant-design/icons';
 import { Flex, FloatButton } from 'antd';
 import { useEffect } from 'react';
+import dayjs from 'dayjs';
 import { Tags, ExpensesTable } from '@src/components';
 import './Home.css';
 
@@ -10,10 +11,13 @@ function Home() {
   const { expenses, getExpensesList } = useExpensesList();
   const { tags, getTagsList } = useTagsList();
 
+  const fromDateTime = dayjs().utc().startOf('month').format();
+  const toDateTime = dayjs().utc().endOf('month').format();
+
   useEffect(() => {
-    (async () => await getExpensesList())();
+    (async () => await getExpensesList(1, fromDateTime, toDateTime))();
     (async () => await getTagsList())();
-  }, [getExpensesList, getTagsList]);
+  }, [getExpensesList, getTagsList, fromDateTime, toDateTime]);
 
   console.log(expenses);
   console.log(tags);

@@ -7,7 +7,7 @@ interface ExpensesListState {
     items: Expense[];
     total: number;
   };
-  getExpensesList: () => Promise<void>;
+  getExpensesList: (page: number, fromDateTime: string, toDateTime: string) => Promise<void>;
 }
 
 export const useExpensesList = create<ExpensesListState>((set) => ({
@@ -15,8 +15,8 @@ export const useExpensesList = create<ExpensesListState>((set) => ({
     items: [],
     total: 0,
   },
-  getExpensesList: async () => {
-    const res = await getExpensesList();
+  getExpensesList: async (page: number, fromDateTime: string, toDateTime: string) => {
+    const res = await getExpensesList(page, fromDateTime, toDateTime);
     set({ expenses: res.data });
   },
 }));
