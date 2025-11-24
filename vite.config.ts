@@ -23,6 +23,12 @@ export default ({ mode }: { mode: string }) => {
       host: true,
       port: 5173,
       allowedHosts: ['homeserver'],
+      proxy: {
+        '/api/v1': {
+          target: 'http://localhost:3000/api/v1',
+          changeOrigin: true,
+        },
+      },
     },
   });
 };

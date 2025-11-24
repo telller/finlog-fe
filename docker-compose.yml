@@ -1,6 +1,9 @@
 services:
   finlog-fe:
-    build: .
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+      target: dev
     container_name: finlog-fe
     restart: always
     ports:
