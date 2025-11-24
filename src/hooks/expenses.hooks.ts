@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { getExpensesList } from '@src/services/expenses.service.ts';
-import type { Expense } from '@src/types/expenses.ts';
+import { getExpensesList } from '@src/services/expenses.service';
+import type { Expense } from '@src/types';
 
 interface ExpensesListState {
   expenses: {

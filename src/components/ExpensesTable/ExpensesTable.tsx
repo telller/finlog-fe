@@ -1,17 +1,19 @@
 import { Table, Tag, Tooltip } from 'antd';
 import dayjs from 'dayjs';
+import { TruncatedText, TableActions } from '@src/components';
 import { formatDateLabel } from '@src/utils/formatDateLabel';
 import type { Tag as TagType } from '@src/types/tag';
 import type { Expense } from '@src/types/expenses';
-import { TruncatedText } from '@src/components';
 import './ExpensesTable.css';
 
 interface ExpensesTableProps {
   expenses: { items: Expense[]; total: number };
+  onEdit: (expense: Expense) => void;
+  onDelete: (id: string) => void;
   tags: TagType[];
 }
 
-const ExpensesTable = ({ expenses, tags }: ExpensesTableProps) => {
+const ExpensesTable = ({ expenses, tags, onEdit, onDelete }: ExpensesTableProps) => {
   const tagMap = new Map(tags.map(({ id, ...rest }) => [id, rest]));
   const columns = [
     {
@@ -42,6 +44,14 @@ const ExpensesTable = ({ expenses, tags }: ExpensesTableProps) => {
       title: 'Опис',
       dataIndex: 'description',
       render: (description: string) => <TruncatedText text={description} />,
+    },
+    {
+      title: '',
+      key: 'actions',
+      width: 56,
+      render: (_: string, record: Expense) => (
+        <TableActions expense={record} onEdit={onEdit} onDelete={onDelete} />
+      ),
     },
   ];
   return (

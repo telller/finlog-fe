@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { getTagsList } from '@src/services/tag.service.ts';
-import type { Tag } from '@src/types/tag.ts';
+import { getTagsList } from '@src/services/tag.service';
+import type { Tag } from '@src/types';
 
 interface TagsListState {
   tags: Tag[];
