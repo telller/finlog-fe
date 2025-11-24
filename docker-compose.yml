@@ -2,7 +2,7 @@ services:
   finlog-fe:
     build: .
     container_name: finlog-fe
-    restart: unless-stopped
+    restart: always
     ports:
       - "5173:5173"
     volumes:
