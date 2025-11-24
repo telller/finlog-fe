@@ -3,8 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        NODE_ENV: prod
+      target: build
     container_name: finlog-fe
     restart: always
     ports:
