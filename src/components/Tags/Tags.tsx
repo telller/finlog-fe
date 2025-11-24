@@ -9,9 +9,9 @@ interface TagsProps {
 
 const Tags = ({ tags }: TagsProps) => {
   return (
-    <Flex gap="8px" wrap>
+    <Flex gap="8px" wrap className="tags-container">
       {map(tags, ({ id, name, color }) => (
-        <Tag key={id} color={color}>
+        <Tag key={id} color={color} className="tag">
           {name}
         </Tag>
       ))}

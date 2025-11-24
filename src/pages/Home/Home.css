@@ -3,7 +3,7 @@
     .categories-container {
         .label {
             line-height: 24px;
-            font-size: 16px;
+            font-size: 22px;
             padding: 10px 0;
             text-align: start;
         }
@@ -11,7 +11,7 @@
     .expenses-container {
         .label {
             line-height: 24px;
-            font-size: 16px;
+            font-size: 22px;
             padding: 10px 0;
             text-align: start;
         }

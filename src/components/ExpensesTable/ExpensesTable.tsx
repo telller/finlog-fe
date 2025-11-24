@@ -4,6 +4,7 @@ import { formatDateLabel } from '@src/utils/formatDateLabel';
 import type { Tag as TagType } from '@src/types/tag';
 import type { Expense } from '@src/types/expenses';
 import { TruncatedText } from '@src/components';
+import './ExpensesTable.css';
 
 interface ExpensesTableProps {
   expenses: { items: Expense[]; total: number };
@@ -26,7 +27,7 @@ const ExpensesTable = ({ expenses, tags }: ExpensesTableProps) => {
       render: (tagId: string) => {
         const tag = tagMap.get(tagId);
         return (
-          <Tag key={tagId} color={tag?.color}>
+          <Tag key={tagId} color={tag?.color} className="tag">
             {tag?.name}
           </Tag>
         );
@@ -45,6 +46,7 @@ const ExpensesTable = ({ expenses, tags }: ExpensesTableProps) => {
   ];
   return (
     <Table
+      className="expenses-table"
       dataSource={expenses.items}
       scroll={{ y: 500 }}
       pagination={false}
