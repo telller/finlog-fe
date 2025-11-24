@@ -11,6 +11,7 @@ export default ({ mode }: { mode: string }) => {
   const env = loadEnv(mode, envDir);
   return defineConfig({
     plugins: [react()],
+    base: '/',
     define: {
       'process.env': env,
     },
