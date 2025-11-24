@@ -8,9 +8,4 @@ export default defineConfig({
       '@src': '/src',
     },
   },
-  // server: {
-  //   host: true,
-  //   port: 5173,
-  //   allowedHosts: ['homeserver'],
-  // },
 });
