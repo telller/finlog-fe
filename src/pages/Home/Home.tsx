@@ -45,7 +45,7 @@ function Home() {
     await getExpensesList(1, fromDateTime, toDateTime);
   };
 
-  const handleRefresh = () => getExpensesList(1, fromDateTime, toDateTime)
+  const handleRefresh = () => getExpensesList(1, fromDateTime, toDateTime);
 
   return (
     <Flex gap="middle" vertical className="home-container">

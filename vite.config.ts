@@ -11,7 +11,6 @@ export default ({ mode }: { mode: string }) => {
   const env = loadEnv(mode, envDir);
   return defineConfig({
     plugins: [react()],
-    base: '/',
     define: {
       'process.env': env,
     },
@@ -24,12 +23,6 @@ export default ({ mode }: { mode: string }) => {
       host: true,
       port: 5173,
       allowedHosts: ['homeserver'],
-      proxy: {
-        '/api/v1': {
-          target: 'http://localhost:3000/api/v1',
-          changeOrigin: true,
-        },
-      },
     },
   });
 };
