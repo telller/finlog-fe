@@ -14,8 +14,8 @@ function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(1);
 
-  const { expenses, loading, getExpensesList } = useExpensesList();
-  const { tags, getTagsList } = useTagsList();
+  const { expenses, loading: expensesLoading, getExpensesList } = useExpensesList();
+  const { tags, loading: tagsLoading, getTagsList } = useTagsList();
 
   useEffect(() => {
     (async () => await getExpensesList(page))();
@@ -54,7 +54,11 @@ function Home() {
     <Flex gap="middle" vertical className="home-container">
       <Flex vertical className="categories-container">
         <span className="label">Категорії</span>
-        <Tags tags={tags} onTagClick={(tagId) => handleOpenModal(null, tagId)} />
+        <Tags
+          onTagClick={(tagId) => handleOpenModal(null, tagId)}
+          loading={tagsLoading}
+          tags={tags}
+        />
       </Flex>
       <Flex vertical className="expenses-container">
         <span className="label">Останні витрати</span>
@@ -62,8 +66,8 @@ function Home() {
           onEdit={(expense) => handleOpenModal(expense)}
           onDelete={(id) => handleDeleteExpense(id)}
           onLoadMore={() => setPage(page + 1)}
+          loading={expensesLoading}
           expenses={expenses}
-          loading={loading}
           tags={tags}
         />
       </Flex>

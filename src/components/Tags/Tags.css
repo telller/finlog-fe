@@ -1,4 +1,8 @@
 .tags-container {
+    min-height: 60px;
+    .spin-container {
+        width: 100%;
+    }
     .tag {
         padding: 4px 8px;
         font-size: 16px;

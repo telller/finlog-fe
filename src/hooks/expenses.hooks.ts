@@ -3,19 +3,13 @@ import { getExpensesList } from '@src/services/expenses.service';
 import type { Expense } from '@src/types';
 
 interface ExpensesListState {
-  expenses: {
-    items: Expense[];
-    total: number;
-  };
-  loading: boolean;
   getExpensesList: (page: number) => Promise<void>;
+  expenses: { items: Expense[]; total: number };
+  loading: boolean;
 }
 
 export const useExpensesList = create<ExpensesListState>((set) => ({
-  expenses: {
-    items: [],
-    total: 0,
-  },
+  expenses: { items: [], total: 0 },
   loading: false,
   getExpensesList: async (page: number) => {
     set({ loading: true });
