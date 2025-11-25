@@ -1,6 +1,6 @@
 import { Outlet, useLocation, useNavigate } from 'react-router';
-import { MenuOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Layout } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
+import { Button, Flex, Layout } from 'antd';
 import { useState } from 'react';
 import { map } from 'lodash';
 import cl from 'classnames';
@@ -31,27 +31,29 @@ const MainLayout = () => {
 
   return (
     <Layout className="main-layout">
-      <Layout.Header className="header">
-        <div className="headerContainer">
-          <Button onClick={() => $isOpened(!isOpened)} icon={<MenuOutlined />} shape="circle" />
-        </div>
-        <div className="headerCenter">{menuMap.get(location.pathname)}</div>
-        <div className="headerContainer">
-          <Button onClick={() => {}} icon={<UserOutlined />} shape="circle" />
-        </div>
-      </Layout.Header>
-      <Layout>
-        <Layout.Sider className={cl('sidebar', { isOpened })}>
+      <Flex className="sidebar-container">
+        <Flex className={cl('sidebar-background', { isOpened })} onClick={() => $isOpened(false)} />
+        <Flex className={cl('sidebar', { isOpened })}>
+          <div className="user-container">Голяченко Влад</div>
           {map(menuItems, ({ label, route }) => (
-            <div
-              className={cl('menuItem', { active: route === location.pathname })}
-              onClick={() => handleMenuClick(route)}
-              key={route}
-            >
+            <Flex className="menuItem" onClick={() => handleMenuClick(route)} key={route}>
               {label}
-            </div>
+            </Flex>
           ))}
-        </Layout.Sider>
+        </Flex>
+      </Flex>
+      <Layout>
+        <Layout.Header className="header">
+          <div className="headerContainer">
+            <Button
+              onClick={() => $isOpened(!isOpened)}
+              icon={<MenuOutlined />}
+              shape="circle"
+              size="large"
+            />
+          </div>
+          <div className="headerCenter">{menuMap.get(location.pathname)}</div>
+        </Layout.Header>
         <Layout.Content className="content">
           <Outlet />
         </Layout.Content>
