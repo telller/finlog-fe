@@ -1,6 +1,9 @@
-import { useExpensesStatState, useTagsState } from '@src/state';
 import { useEffect } from 'react';
+import { Flex } from 'antd';
 import dayjs from 'dayjs';
+import { ExpensesPieChart, ExpensesStatTable } from '@src/components';
+import { useExpensesStatState, useTagsState } from '@src/state';
+import './Stat.css';
 
 function Stat() {
   const { expensesStat, loading, getExpensesStatList } = useExpensesStatState();
@@ -20,7 +23,12 @@ function Stat() {
   console.log({ expensesStat, loading });
   console.log({ tags, tagsLoading });
 
-  return <h1>STAT PAGE</h1>;
+  return (
+    <Flex gap="middle" vertical className="stat-container">
+      <ExpensesPieChart />
+      <ExpensesStatTable expenses={expensesStat} loading={loading} />
+    </Flex>
+  );
 }
 
 export default Stat;
