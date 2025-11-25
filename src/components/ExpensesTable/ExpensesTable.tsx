@@ -3,8 +3,8 @@ import type { UIEvent } from 'react';
 import dayjs from 'dayjs';
 import { TruncatedText, TableActions } from '@src/components';
 import { formatDateLabel } from '@src/utils/formatDateLabel';
-import type { Tag as TagType } from '@src/types/tag';
 import type { Expense } from '@src/types/expenses';
+import { useTagsState } from '@src/state';
 import './ExpensesTable.css';
 
 interface ExpensesTableProps {
@@ -13,17 +13,10 @@ interface ExpensesTableProps {
   onDelete: (id: string) => void;
   onLoadMore: () => void;
   loading: boolean;
-  tags: TagType[];
 }
 
-const ExpensesTable = ({
-  onLoadMore,
-  onDelete,
-  expenses,
-  loading,
-  onEdit,
-  tags,
-}: ExpensesTableProps) => {
+const ExpensesTable = ({ onLoadMore, onDelete, expenses, loading, onEdit }: ExpensesTableProps) => {
+  const { tagsMap } = useTagsState();
   const handleLoadMore = async (event: UIEvent<HTMLDivElement>) => {
     if (loading || expenses.items.length >= expenses.total) return;
     const target = event.target as HTMLDivElement;
@@ -31,7 +24,6 @@ const ExpensesTable = ({
       onLoadMore();
     }
   };
-  const tagMap = new Map(tags.map(({ id, ...rest }) => [id, rest]));
   const columns = [
     {
       title: 'Дата',
@@ -44,7 +36,7 @@ const ExpensesTable = ({
       title: 'Категорія',
       dataIndex: 'tagId',
       render: (tagId: string) => {
-        const tag = tagMap.get(tagId);
+        const tag = tagsMap.get(tagId);
         return (
           <Tag key={tagId} color={tag?.color} className="tag">
             {tag?.name}
@@ -71,7 +63,6 @@ const ExpensesTable = ({
       ),
     },
   ];
-  console.log({ loading });
   return (
     <Flex className="expenses-table-container">
       <Table

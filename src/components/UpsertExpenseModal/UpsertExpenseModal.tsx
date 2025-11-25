@@ -2,7 +2,7 @@ import { DatePicker, Form, Input, Modal, Select } from 'antd';
 import { useEffect } from 'react';
 import { map } from 'lodash';
 import { roundTo15Minutes } from '@src/utils/roundTo15Minutes';
-import {createExpense, updateExpense} from '@src/services/expenses.service';
+import { createExpense, updateExpense } from '@src/services';
 import type { UpsertExpenseDto } from '@src/dto';
 import type { Expense, Tag } from '@src/types';
 import dayjs from 'dayjs';

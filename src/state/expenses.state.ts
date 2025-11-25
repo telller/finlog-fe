@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getExpensesList } from '@src/services/expenses.service';
+import { getExpensesList } from '@src/services';
 import type { Expense } from '@src/types';
 
 interface ExpensesListState {
@@ -8,17 +8,15 @@ interface ExpensesListState {
   loading: boolean;
 }
 
-export const useExpensesList = create<ExpensesListState>((set) => ({
+export const useExpensesState = create<ExpensesListState>((set) => ({
   expenses: { items: [], total: 0 },
   loading: true,
   getExpensesList: async (page: number) => {
     set({ loading: true });
-    const res = await getExpensesList(page);
+    const { data } = await getExpensesList(page);
     set((state) => ({
       expenses:
-        page === 1
-          ? res.data
-          : { items: [...state.expenses.items, ...res.data.items], total: res.data.total },
+        page === 1 ? data : { items: [...state.expenses.items, ...data.items], total: data.total },
       loading: false,
     }));
   },

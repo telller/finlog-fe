@@ -1,14 +1,25 @@
-// import { useEffect } from 'react';
-// import { useExpensesList } from '@src/hooks/expenses.hooks.ts';
+import { useExpensesStatState, useTagsState } from '@src/state';
+import { useEffect } from 'react';
+import dayjs from 'dayjs';
 
 function Stat() {
-  // const { expenses, getExpensesList } = useExpensesList();
+  const { expensesStat, loading, getExpensesStatList } = useExpensesStatState();
+  const { tags, loading: tagsLoading, getTagsList } = useTagsState();
 
-  // useEffect(() => {
-  //   (async () => await getExpensesList())();
-  // }, [getExpensesList]);
+  const fromDateTime = dayjs().utc().startOf('month').format();
+  const toDateTime = dayjs().utc().endOf('month').format();
 
-  // console.log(expenses);
+  useEffect(() => {
+    (async () => await getExpensesStatList({ fromDateTime, toDateTime }))();
+  }, [fromDateTime, getExpensesStatList, toDateTime]);
+
+  useEffect(() => {
+    (async () => await getTagsList())();
+  }, [getTagsList]);
+
+  console.log({ expensesStat, loading });
+  console.log({ tags, tagsLoading });
+
   return <h1>STAT PAGE</h1>;
 }
 

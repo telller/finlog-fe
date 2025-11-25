@@ -1,7 +1,12 @@
 import axios from './axios.service';
-import type { UpsertExpenseDto } from '@src/dto/upsertExpense.dto.ts';
+import qs from 'query-string';
+import type { GetExpenseStatListDto, UpsertExpenseDto } from '@src/dto';
 
 export const getExpensesList = (page: number) => axios.get(`/expenses/list?page=${page}`);
+
+export const getExpensesStatList = (query: GetExpenseStatListDto) => {
+  return axios.get(`/expenses/stat-list?${qs.stringify(query)}`);
+};
 
 export const createExpense = (body: UpsertExpenseDto) => axios.post(`/expenses`, body);
 

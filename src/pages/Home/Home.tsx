@@ -1,11 +1,10 @@
-import { Tags, ExpensesTable, UpsertExpenseModal } from '@src/components';
-import { deleteExpense } from '@src/services/expenses.service';
-import { useExpensesList } from '@src/hooks/expenses.hooks';
-import { useTagsList } from '@src/hooks/tag.hooks.ts';
 import { PlusOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
-import type { Expense } from '@src/types';
 import { Flex, FloatButton } from 'antd';
+import { Tags, ExpensesTable, UpsertExpenseModal } from '@src/components';
+import { useExpensesState, useTagsState } from '@src/state';
+import { deleteExpense } from '@src/services';
+import type { Expense } from '@src/types';
 import './Home.css';
 
 function Home() {
@@ -14,8 +13,8 @@ function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(1);
 
-  const { expenses, loading: expensesLoading, getExpensesList } = useExpensesList();
-  const { tags, loading: tagsLoading, getTagsList } = useTagsList();
+  const { expenses, loading: expensesLoading, getExpensesList } = useExpensesState();
+  const { tags, loading: tagsLoading, getTagsList } = useTagsState();
 
   useEffect(() => {
     (async () => await getExpensesList(page))();
@@ -24,9 +23,6 @@ function Home() {
   useEffect(() => {
     (async () => await getTagsList())();
   }, [getTagsList]);
-
-  console.log(expenses);
-  console.log(tags);
 
   const handleOpenModal = (expenseToEdit: Expense | null = null, tagId: string | null = null) => {
     setExpenseToEdit(expenseToEdit);
@@ -68,7 +64,6 @@ function Home() {
           onLoadMore={() => setPage(page + 1)}
           loading={expensesLoading}
           expenses={expenses}
-          tags={tags}
         />
       </Flex>
       <FloatButton
