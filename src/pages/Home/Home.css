@@ -1,5 +1,8 @@
 .home-container {
-    padding: 0 20px;
+    height: 100%;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
     .categories-container {
         .label {
             line-height: 24px;
@@ -9,6 +12,8 @@
         }
     }
     .expenses-container {
+        min-height: 0;
+        flex: 1;
         .label {
             line-height: 24px;
             font-size: 22px;

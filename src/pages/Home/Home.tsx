@@ -6,24 +6,24 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import type { Expense } from '@src/types';
 import { Flex, FloatButton } from 'antd';
-import dayjs from 'dayjs';
 import './Home.css';
 
 function Home() {
   const [expenseToEdit, setExpenseToEdit] = useState<Expense | null>(null);
   const [tagId, setTagId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const { expenses, getExpensesList } = useExpensesList();
+  const { expenses, loading, getExpensesList } = useExpensesList();
   const { tags, getTagsList } = useTagsList();
 
-  const fromDateTime = dayjs().utc().startOf('month').format();
-  const toDateTime = dayjs().utc().endOf('month').format();
+  useEffect(() => {
+    (async () => await getExpensesList(page))();
+  }, [getExpensesList, page]);
 
   useEffect(() => {
-    (async () => await getExpensesList(1, fromDateTime, toDateTime))();
     (async () => await getTagsList())();
-  }, [getExpensesList, getTagsList, fromDateTime, toDateTime]);
+  }, [getTagsList]);
 
   console.log(expenses);
   console.log(tags);
@@ -42,10 +42,13 @@ function Home() {
 
   const handleDeleteExpense = async (id: string) => {
     await deleteExpense(id);
-    await getExpensesList(1, fromDateTime, toDateTime);
+    handleRefresh();
   };
 
-  const handleRefresh = () => getExpensesList(1, fromDateTime, toDateTime);
+  const handleRefresh = () => {
+    if (page === 1) getExpensesList(1).then(() => {});
+    else setPage(1);
+  };
 
   return (
     <Flex gap="middle" vertical className="home-container">
@@ -58,7 +61,9 @@ function Home() {
         <ExpensesTable
           onEdit={(expense) => handleOpenModal(expense)}
           onDelete={(id) => handleDeleteExpense(id)}
+          onLoadMore={() => setPage(page + 1)}
           expenses={expenses}
+          loading={loading}
           tags={tags}
         />
       </Flex>
@@ -70,8 +75,8 @@ function Home() {
       />
       <UpsertExpenseModal
         handleClose={handleCloseModal}
-        expenseToEdit={expenseToEdit}
         handleRefresh={handleRefresh}
+        expenseToEdit={expenseToEdit}
         isOpen={isOpen}
         tagId={tagId}
         tags={tags}

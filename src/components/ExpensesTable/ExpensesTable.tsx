@@ -1,4 +1,5 @@
-import { Table, Tag, Tooltip } from 'antd';
+import { Flex, Table, Tag, Tooltip } from 'antd';
+import type { UIEvent } from 'react';
 import dayjs from 'dayjs';
 import { TruncatedText, TableActions } from '@src/components';
 import { formatDateLabel } from '@src/utils/formatDateLabel';
@@ -10,10 +11,26 @@ interface ExpensesTableProps {
   expenses: { items: Expense[]; total: number };
   onEdit: (expense: Expense) => void;
   onDelete: (id: string) => void;
+  onLoadMore: () => void;
+  loading: boolean;
   tags: TagType[];
 }
 
-const ExpensesTable = ({ expenses, tags, onEdit, onDelete }: ExpensesTableProps) => {
+const ExpensesTable = ({
+  onLoadMore,
+  onDelete,
+  expenses,
+  loading,
+  onEdit,
+  tags,
+}: ExpensesTableProps) => {
+  const handleLoadMore = async (event: UIEvent<HTMLDivElement>) => {
+    if (loading || expenses.items.length >= expenses.total) return;
+    const target = event.target as HTMLDivElement;
+    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 20) {
+      onLoadMore();
+    }
+  };
   const tagMap = new Map(tags.map(({ id, ...rest }) => [id, rest]));
   const columns = [
     {
@@ -54,16 +71,20 @@ const ExpensesTable = ({ expenses, tags, onEdit, onDelete }: ExpensesTableProps)
       ),
     },
   ];
+  console.log({ loading });
   return (
-    <Table
-      className="expenses-table"
-      dataSource={expenses.items}
-      scroll={{ y: 500 }}
-      pagination={false}
-      columns={columns}
-      size="small"
-      rowKey="id"
-    />
+    <Flex className="expenses-table-container">
+      <Table
+        dataSource={expenses.items}
+        onScroll={handleLoadMore}
+        scroll={{ y: '100%' }}
+        pagination={false}
+        columns={columns}
+        loading={loading}
+        size="small"
+        rowKey="id"
+      />
+    </Flex>
   );
 };
 

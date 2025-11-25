@@ -1,8 +1,7 @@
 import axios from './axios.service';
 import type { UpsertExpenseDto } from '@src/dto/upsertExpense.dto.ts';
 
-export const getExpensesList = (page: number, fromDateTime: string, toDateTime: string) =>
-  axios.get(`/expenses/list?page=${page}&fromDateTime=${fromDateTime}&toDateTime=${toDateTime}`);
+export const getExpensesList = (page: number) => axios.get(`/expenses/list?page=${page}`);
 
 export const createExpense = (body: UpsertExpenseDto) => axios.post(`/expenses`, body);
 
