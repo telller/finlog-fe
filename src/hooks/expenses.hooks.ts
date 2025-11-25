@@ -10,7 +10,7 @@ interface ExpensesListState {
 
 export const useExpensesList = create<ExpensesListState>((set) => ({
   expenses: { items: [], total: 0 },
-  loading: false,
+  loading: true,
   getExpensesList: async (page: number) => {
     set({ loading: true });
     const res = await getExpensesList(page);

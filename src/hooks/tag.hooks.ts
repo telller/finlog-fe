@@ -10,7 +10,7 @@ interface TagsListState {
 
 export const useTagsList = create<TagsListState>((set) => ({
   tags: [],
-  loading: false,
+  loading: true,
   getTagsList: async () => {
     set({ loading: true });
     const res = await getTagsList();

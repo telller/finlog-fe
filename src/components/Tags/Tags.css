@@ -1,5 +1,8 @@
 .tags-container {
-    min-height: 60px;
+    min-height: 38px;
+    @media (max-width: 440px) {
+        min-height: 152px;
+    }
     .spin-container {
         width: 100%;
     }
