@@ -8,7 +8,7 @@ interface TruncatedTextProps {
 const TruncatedText = ({ text }: TruncatedTextProps) => {
   const [showFull, setShowFull] = useState(false);
 
-  const isTruncated = text.length > 10;
+  const isTruncated = text.length > 50;
   const displayText = showFull || !isTruncated ? text : text.slice(0, 10) + '...';
 
   return (
