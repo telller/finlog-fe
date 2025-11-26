@@ -2,12 +2,18 @@ import { useEffect } from 'react';
 import { Flex } from 'antd';
 import dayjs from 'dayjs';
 import { ExpensesBarChart, ExpensesPieChart, ExpensesStatTable } from '@src/components';
-import { useExpensesStatListState, useTagsState, useTagsStatState } from '@src/state';
+import {
+  useExpensesStatListState,
+  useDaysStatState,
+  useTagsStatState,
+  useTagsState,
+} from '@src/state';
 import './Stat.css';
 
 function Stat() {
   const { expensesStatList, loading: expLoading, getExpensesStatList } = useExpensesStatListState();
   const { tagsStat, loading: tagsStatLoading, getTagsStat } = useTagsStatState();
+  const { daysStat, loading: daysStatLoading, getDaysStat } = useDaysStatState();
   const { tags, loading: tagsLoading, getTagsList } = useTagsState();
 
   const fromDateTime = dayjs().utc().startOf('month').format();
@@ -24,11 +30,16 @@ function Stat() {
   }, [getTagsStat, fromDateTime, toDateTime]);
 
   useEffect(() => {
+    (async () => await getDaysStat({ fromDateTime, toDateTime }))();
+  }, [getDaysStat, fromDateTime, toDateTime]);
+
+  useEffect(() => {
     (async () => await getTagsList())();
   }, [getTagsList]);
 
   console.log({ expensesStatList, expLoading });
   console.log({ tagsStat, tagsStatLoading });
+  console.log({ daysStat, daysStatLoading });
   console.log({ tags, tagsLoading });
 
   return (
