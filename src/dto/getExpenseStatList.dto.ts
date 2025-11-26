@@ -1,8 +1,3 @@
-export interface GetExpenseStatListDto {
-  fromDateTime: string;
-  toDateTime: string;
-  tagIds?: string[];
-  search?: string;
-  amountFrom?: number;
-  amountTo?: number;
-}
+import type { PaginationDto, ExpenseStatFilterDto } from '@src/dto';
+
+export interface GetExpenseStatListDto extends ExpenseStatFilterDto, PaginationDto {}

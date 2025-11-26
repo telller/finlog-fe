@@ -1,2 +1,4 @@
-export * from './getExpenseStatList.dto.ts';
-export * from './upsertExpense.dto.ts';
+export * from './getExpenseStatList.dto';
+export * from './expenseStatFilter.dto';
+export * from './upsertExpense.dto';
+export * from './pagination.dto';

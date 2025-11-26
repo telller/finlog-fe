@@ -1,32 +1,43 @@
 import { useEffect } from 'react';
 import { Flex } from 'antd';
 import dayjs from 'dayjs';
-import { ExpensesPieChart, ExpensesStatTable } from '@src/components';
-import { useExpensesStatState, useTagsState } from '@src/state';
+import { ExpensesBarChart, ExpensesPieChart, ExpensesStatTable } from '@src/components';
+import { useExpensesStatListState, useTagsState, useTagsStatState } from '@src/state';
 import './Stat.css';
 
 function Stat() {
-  const { expensesStat, loading, getExpensesStatList } = useExpensesStatState();
+  const { expensesStatList, loading: expLoading, getExpensesStatList } = useExpensesStatListState();
+  const { tagsStat, loading: tagsStatLoading, getTagsStat } = useTagsStatState();
   const { tags, loading: tagsLoading, getTagsList } = useTagsState();
 
   const fromDateTime = dayjs().utc().startOf('month').format();
   const toDateTime = dayjs().utc().endOf('month').format();
 
+  console.log({ fromDateTime, toDateTime });
+
   useEffect(() => {
-    (async () => await getExpensesStatList({ fromDateTime, toDateTime }))();
-  }, [fromDateTime, getExpensesStatList, toDateTime]);
+    (async () => await getExpensesStatList({ page: 1, fromDateTime, toDateTime }))();
+  }, [getExpensesStatList, fromDateTime, toDateTime]);
+
+  useEffect(() => {
+    (async () => await getTagsStat({ fromDateTime, toDateTime }))();
+  }, [getTagsStat, fromDateTime, toDateTime]);
 
   useEffect(() => {
     (async () => await getTagsList())();
   }, [getTagsList]);
 
-  console.log({ expensesStat, loading });
+  console.log({ expensesStatList, expLoading });
+  console.log({ tagsStat, tagsStatLoading });
   console.log({ tags, tagsLoading });
 
   return (
     <Flex gap="middle" vertical className="stat-container">
-      <ExpensesPieChart />
-      <ExpensesStatTable expenses={expensesStat} loading={loading} />
+      <Flex>
+        <ExpensesPieChart />
+        <ExpensesBarChart />
+      </Flex>
+      <ExpensesStatTable expenses={expensesStatList} loading={expLoading} />
     </Flex>
   );
 }

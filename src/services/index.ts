@@ -1,2 +1,3 @@
 export * from './expenses.service';
-export * from './tag.service.ts';
+export * from './stat.service';
+export * from './tag.service';

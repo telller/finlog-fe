@@ -4,7 +4,7 @@ import { map } from 'lodash';
 import { useTagsState, useTagsStatState } from '@src/state';
 import type { TagStat } from '@src/types';
 
-const ExpensesPieChart = () => {
+const ExpensesBarChart = () => {
   const { tagsStat } = useTagsStatState();
   const { tagsMap } = useTagsState();
   return (
@@ -48,4 +48,4 @@ const ExpensesPieChart = () => {
   );
 };
 
-export default ExpensesPieChart;
+export default ExpensesBarChart;
