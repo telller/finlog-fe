@@ -12,7 +12,7 @@ const MainLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { loading, loggedIn, user, getMe } = useAuthState();
+  const { loading, loggedIn, user, getMe, logout } = useAuthState();
 
   useEffect(() => {
     (async () => await getMe())();
@@ -36,6 +36,11 @@ const MainLayout = () => {
     navigate(route);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
   if (loading) {
     return (
       <Flex justify="center" align="center" style={{ height: '100vh' }}>
@@ -49,14 +54,17 @@ const MainLayout = () => {
     return null;
   }
 
-  console.log({ user });
-
   return (
     <Layout className="main-layout">
       <Flex className="sidebar-container">
         <Flex className={cl('sidebar-background', { isOpened })} onClick={() => $isOpened(false)} />
         <Flex className={cl('sidebar', { isOpened })}>
-          <div className="user-container">Голяченко Влад</div>
+          <div className="user-container">
+            {user?.username}
+            <Button type="text" style={{ color: 'red' }} onClick={handleLogout}>
+              Вийти
+            </Button>
+          </div>
           {map(menuItems, ({ label, route }) => (
             <Flex className="menuItem" onClick={() => handleMenuClick(route)} key={route}>
               {label}

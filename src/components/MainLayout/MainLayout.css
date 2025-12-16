@@ -59,7 +59,7 @@
                 height: 64px;
                 display: flex;
                 align-items: center;
-                justify-content: start;
+                justify-content: space-between;
                 padding: 0 16px;
                 border-bottom: 1px solid rgb(219, 219, 211);
                 font-weight: 500;
