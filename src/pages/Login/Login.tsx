@@ -40,19 +40,19 @@ const Login = () => {
         </Typography.Title>
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
+            rules={[
+              { type: 'email', message: 'Неправильна адреса електронної пошти' },
+              { required: true, message: 'Введіть адресу електронної пошти' },
+            ]}
             label="Електронна пошта"
             name="email"
-            rules={[
-              { required: true, message: 'Введіть адресу електронної пошти' },
-              { type: 'email', message: 'Неправильна адреса електронної пошти' },
-            ]}
           >
             <Input placeholder="email@example.com" />
           </Form.Item>
           <Form.Item
-            label="Пароль"
-            name="password"
             rules={[{ required: true, message: 'Введіть пароль' }]}
+            name="password"
+            label="Пароль"
           >
             <Input.Password placeholder="••••••••" />
           </Form.Item>

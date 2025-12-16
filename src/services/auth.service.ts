@@ -12,3 +12,5 @@ export const clearTokens = () => {
 };
 
 export const login = (body: { email: string; password: string }) => axios.post(`/auth/login`, body);
+
+export const getMe = () => axios.get(`/auth/me`);

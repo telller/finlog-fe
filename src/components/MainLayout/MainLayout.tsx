@@ -1,7 +1,8 @@
 import { Outlet, useLocation, useNavigate } from 'react-router';
+import { Button, Flex, Layout, Spin } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
-import { Button, Flex, Layout } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAuthState } from '@src/state';
 import { map } from 'lodash';
 import cl from 'classnames';
 import './MainLayout.css';
@@ -10,6 +11,12 @@ const MainLayout = () => {
   const [isOpened, $isOpened] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { loading, loggedIn, user, getMe } = useAuthState();
+
+  useEffect(() => {
+    (async () => await getMe())();
+  }, [getMe]);
 
   const menuItems = [
     {
@@ -28,6 +35,21 @@ const MainLayout = () => {
     $isOpened(false);
     navigate(route);
   };
+
+  if (loading) {
+    return (
+      <Flex justify="center" align="center" style={{ height: '100vh' }}>
+        <Spin size="large" />
+      </Flex>
+    );
+  }
+
+  if (!loggedIn) {
+    navigate('/login');
+    return null;
+  }
+
+  console.log({ user });
 
   return (
     <Layout className="main-layout">
