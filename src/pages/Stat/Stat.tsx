@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Flex } from 'antd';
 import dayjs from 'dayjs';
-import { ExpensesBarChart, ExpensesPieChart, ExpensesStatTable } from '@src/components';
+import { ExpensesBarChart, ExpensesPieChart, ExpensesStatTable, StatFilter } from '@src/components';
 import {
   useExpensesStatListState,
   useDaysStatState,
@@ -9,29 +9,28 @@ import {
   useTagsState,
 } from '@src/state';
 import './Stat.css';
+import type { ExpenseStatFilterDto } from '@src/dto';
 
 function Stat() {
+  const fromDateTime = dayjs().utc().startOf('month').format();
+  const toDateTime = dayjs().utc().endOf('month').format();
   const { expensesStatList, loading: expLoading, getExpensesStatList } = useExpensesStatListState();
   const { tagsStat, loading: tagsStatLoading, getTagsStat } = useTagsStatState();
   const { daysStat, loading: daysStatLoading, getDaysStat } = useDaysStatState();
   const { tags, loading: tagsLoading, getTagsList } = useTagsState();
-
-  const fromDateTime = dayjs().utc().startOf('month').format();
-  const toDateTime = dayjs().utc().endOf('month').format();
-
-  console.log({ fromDateTime, toDateTime });
+  const [statFilter, setStatFilter] = useState<ExpenseStatFilterDto>({ fromDateTime, toDateTime });
 
   useEffect(() => {
-    (async () => await getExpensesStatList({ page: 1, fromDateTime, toDateTime }))();
-  }, [getExpensesStatList, fromDateTime, toDateTime]);
+    (async () => await getExpensesStatList({ page: 1, ...statFilter }))();
+  }, [getExpensesStatList, statFilter]);
 
   useEffect(() => {
-    (async () => await getTagsStat({ fromDateTime, toDateTime }))();
-  }, [getTagsStat, fromDateTime, toDateTime]);
+    (async () => await getTagsStat(statFilter))();
+  }, [getTagsStat, statFilter]);
 
   useEffect(() => {
-    (async () => await getDaysStat({ fromDateTime, toDateTime }))();
-  }, [getDaysStat, fromDateTime, toDateTime]);
+    (async () => await getDaysStat(statFilter))();
+  }, [getDaysStat, statFilter]);
 
   useEffect(() => {
     (async () => await getTagsList())();
@@ -44,6 +43,7 @@ function Stat() {
 
   return (
     <Flex gap="middle" vertical className="stat-container">
+      <StatFilter onApply={(filter: ExpenseStatFilterDto) => setStatFilter(filter)} />
       <Flex>
         <ExpensesPieChart />
         <ExpensesBarChart />
