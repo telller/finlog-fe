@@ -15,8 +15,13 @@ export const useAuthState = create<AuthState>((set) => ({
   loggedIn: false,
   loading: true,
   getMe: async () => {
-    const { data: user }: { data: User } = await getMe();
-    set({ user, loggedIn: true, loading: false });
+    try {
+      const { data: user }: { data: User } = await getMe();
+      set({ user, loggedIn: true, loading: false });
+    } catch (err) {
+      set({ loggedIn: false, loading: false });
+      console.log(err);
+    }
   },
   logout: () => {
     clearTokens();
