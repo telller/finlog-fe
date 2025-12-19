@@ -1,4 +1,5 @@
 import { Outlet, useLocation, useNavigate } from 'react-router';
+import { UploadExpensesModal } from '@src/components';
 import { Button, Flex, Layout, Spin } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import cl from 'classnames';
 import './MainLayout.css';
 
 const MainLayout = () => {
+  const [isOpenModal, $isOpenModal] = useState(false);
   const [isOpened, $isOpened] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,6 +43,15 @@ const MainLayout = () => {
     navigate('/login');
   };
 
+  const handleOpenModal = () => {
+    $isOpenModal(true);
+    $isOpened(false);
+  };
+
+  const handleCloseModal = () => {
+    $isOpenModal(false);
+  };
+
   if (loading) {
     return (
       <Flex justify="center" align="center" style={{ height: '100vh' }}>
@@ -59,17 +70,22 @@ const MainLayout = () => {
       <Flex className="sidebar-container">
         <Flex className={cl('sidebar-background', { isOpened })} onClick={() => $isOpened(false)} />
         <Flex className={cl('sidebar', { isOpened })}>
-          <div className="user-container">
-            {user?.username}
-            <Button type="text" style={{ color: 'red' }} onClick={handleLogout}>
-              Вийти
-            </Button>
+          <Flex vertical>
+            <div className="user-container">
+              {user?.username}
+              <Button type="text" style={{ color: 'red' }} onClick={handleLogout}>
+                Вийти
+              </Button>
+            </div>
+            {map(menuItems, ({ label, route }) => (
+              <Flex className="menuItem" onClick={() => handleMenuClick(route)} key={route}>
+                {label}
+              </Flex>
+            ))}
+          </Flex>
+          <div className="footer-container">
+            <Button onClick={handleOpenModal}>Завантажити витрати</Button>
           </div>
-          {map(menuItems, ({ label, route }) => (
-            <Flex className="menuItem" onClick={() => handleMenuClick(route)} key={route}>
-              {label}
-            </Flex>
-          ))}
         </Flex>
       </Flex>
       <Layout>
@@ -86,6 +102,7 @@ const MainLayout = () => {
         </Layout.Header>
         <Layout.Content className="content">
           <Outlet />
+          <UploadExpensesModal isOpen={isOpenModal} handleClose={handleCloseModal} />
         </Layout.Content>
       </Layout>
     </Layout>

@@ -1,3 +1,4 @@
+export { default as UploadExpensesModal } from './UploadExpensesModal/UploadExpensesModal';
 export { default as UpsertExpenseModal } from './UpsertExpenseModal/UpsertExpenseModal';
 export { default as ExpensesStatTable } from './ExpensesStatTable/ExpensesStatTable';
 export { default as ExpensesPieChart } from './ExpensesPieChart/ExpensesPieChart';

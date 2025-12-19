@@ -9,3 +9,6 @@ export const updateExpense = (id: string, body: UpsertExpenseDto) =>
   axios.put(`/expenses/${id}`, body);
 
 export const deleteExpense = (id: string) => axios.delete(`/expenses/${id}`);
+
+export const uploadFile = (body: FormData) =>
+  axios.post(`/expenses/upload`, body, { headers: { 'Content-Type': 'multipart/form-data' } });
