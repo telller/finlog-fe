@@ -5,10 +5,12 @@ import {
   FileTextOutlined,
   InboxOutlined,
 } from '@ant-design/icons';
+import { useExpensesState } from '@src/state';
+import { useNavigate } from 'react-router';
+import { uploadFile } from '@src/services';
 import type { UploadProps } from 'antd';
 import { useState } from 'react';
 import './UploadExpensesModal.css';
-import { uploadFile } from '@src/services';
 
 interface UploadExpensesModalProps {
   handleClose: () => void;
@@ -17,6 +19,8 @@ interface UploadExpensesModalProps {
 
 const UploadExpensesModal = ({ isOpen, handleClose }: UploadExpensesModalProps) => {
   const [file, setFile] = useState<File | null>(null);
+  const { getExpensesList } = useExpensesState();
+  const navigate = useNavigate();
 
   const uploadProps: UploadProps = {
     name: 'file',
@@ -33,7 +37,9 @@ const UploadExpensesModal = ({ isOpen, handleClose }: UploadExpensesModalProps) 
       formData.append('file', file!);
       const res = await uploadFile(formData);
       console.log('uploaded', { res });
+      await getExpensesList(1);
       handleCloseModal();
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
@@ -66,7 +72,7 @@ const UploadExpensesModal = ({ isOpen, handleClose }: UploadExpensesModalProps) 
               <Typography.Text strong>{file.name}</Typography.Text>
               <br />
               <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-                {(file.size / 1024).toFixed(1)} KB
+                {(file.size / 1024).toFixed(2)} KB
               </Typography.Text>
             </div>
           </Space>
