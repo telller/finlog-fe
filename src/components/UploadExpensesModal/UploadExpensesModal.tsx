@@ -37,7 +37,7 @@ const UploadExpensesModal = ({ isOpen, handleClose }: UploadExpensesModalProps) 
       formData.append('file', file!);
       const res = await uploadFile(formData);
       console.log('uploaded', { res });
-      await getExpensesList(1);
+      getExpensesList(1).then();
       handleCloseModal();
       navigate('/');
     } catch (error) {
