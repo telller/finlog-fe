@@ -118,7 +118,7 @@ const StatFilter = ({ onApply }: StatFilterProps) => {
       },
       this_week: () => {
         fromDateTime = dayjs().utc().startOf('week');
-        toDateTime = dayjs().utc().endOf('week');
+        toDateTime = dayjs().utc().endOf('day');
       },
       last_week: () => {
         fromDateTime = dayjs().utc().subtract(1, 'week').startOf('week');
@@ -130,7 +130,7 @@ const StatFilter = ({ onApply }: StatFilterProps) => {
       },
       this_month: () => {
         fromDateTime = dayjs().utc().startOf('month');
-        toDateTime = dayjs().utc().endOf('month');
+        toDateTime = dayjs().utc().endOf('day');
       },
       last_month: () => {
         fromDateTime = dayjs().utc().subtract(1, 'month').startOf('month');
@@ -142,10 +142,10 @@ const StatFilter = ({ onApply }: StatFilterProps) => {
       },
       this_year: () => {
         fromDateTime = dayjs().utc().startOf('year');
-        toDateTime = dayjs().utc().endOf('year');
+        toDateTime = dayjs().utc().endOf('day');
       },
       all_time: () => {
-        fromDateTime = dayjs().utc().subtract(100, 'year').startOf('day');
+        fromDateTime = dayjs('11.02.2025').utc().startOf('day');
         toDateTime = dayjs().utc().endOf('day');
       },
     };
