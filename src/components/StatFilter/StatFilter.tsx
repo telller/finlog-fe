@@ -1,9 +1,68 @@
-import { Card, Row, Col, DatePicker, Select, Input, InputNumber, Button, Space, Form } from 'antd';
+import {
+  Card,
+  Row,
+  Col,
+  DatePicker,
+  Select,
+  Input,
+  InputNumber,
+  Button,
+  Space,
+  Form,
+  Segmented,
+} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { useTagsState } from '@src/state';
 import type { ExpenseStatFilterDto } from '@src/dto';
 import dayjs from 'dayjs';
-import { useEffect } from 'react';
+import { useState } from 'react';
+
+const datePreset = [
+  {
+    label: 'Сьогодні',
+    value: 'today',
+  },
+  {
+    label: 'Вчора',
+    value: 'yesterday',
+  },
+  {
+    label: 'Цей тиждень',
+    value: 'this_week',
+  },
+  {
+    label: 'Останній тиждень',
+    value: 'last_week',
+  },
+  {
+    label: 'Останні 7 днів',
+    value: 'last_7_days',
+  },
+  {
+    label: 'Цей місяць',
+    value: 'this_month',
+  },
+  {
+    label: 'Останній місяць',
+    value: 'last_month',
+  },
+  {
+    label: 'Останні 30 днів',
+    value: 'last_30_days',
+  },
+  {
+    label: 'Цей рік',
+    value: 'this_year',
+  },
+  {
+    label: 'Весь час',
+    value: 'all_time',
+  },
+  {
+    label: 'Свій вибір',
+    value: 'custom',
+  },
+];
 
 interface StatFilterProps {
   onApply: (values: ExpenseStatFilterDto) => void;
@@ -21,14 +80,12 @@ const StatFilter = ({ onApply }: StatFilterProps) => {
   const { tags } = useTagsState();
   const [form] = Form.useForm();
 
-  const fromDateTime = dayjs().utc().startOf('month');
-  const toDateTime = dayjs().utc().endOf('month');
+  const [currentRange, $currentRange] = useState<string>('this_month');
 
-  useEffect(() => {
-    form.setFieldsValue({
-      range: [fromDateTime, toDateTime],
-    });
-  }, [form, fromDateTime, toDateTime]);
+  const initialRange: [dayjs.Dayjs, dayjs.Dayjs] = [
+    dayjs().utc().startOf('month'),
+    dayjs().utc().endOf('month'),
+  ];
 
   const handleSubmit = (values: StatFilterForm) => {
     const data = {
@@ -45,21 +102,83 @@ const StatFilter = ({ onApply }: StatFilterProps) => {
 
   const resetFilters = () => {
     form.resetFields();
-    form.setFieldsValue({ range: [fromDateTime, toDateTime] });
   };
 
+  const handlePresetRange = (value: string) => {
+    let fromDateTime = dayjs().utc();
+    let toDateTime = dayjs().utc();
+    const actions = {
+      today: () => {
+        fromDateTime = dayjs().utc().startOf('day');
+        toDateTime = dayjs().utc().endOf('day');
+      },
+      yesterday: () => {
+        fromDateTime = dayjs().utc().subtract(1, 'day').startOf('day');
+        toDateTime = dayjs().utc().subtract(1, 'day').endOf('day');
+      },
+      this_week: () => {
+        fromDateTime = dayjs().utc().startOf('week');
+        toDateTime = dayjs().utc().endOf('week');
+      },
+      last_week: () => {
+        fromDateTime = dayjs().utc().subtract(1, 'week').startOf('week');
+        toDateTime = dayjs().utc().subtract(1, 'week').endOf('week');
+      },
+      last_7_days: () => {
+        fromDateTime = dayjs().utc().subtract(6, 'day').startOf('day');
+        toDateTime = dayjs().utc().endOf('day');
+      },
+      this_month: () => {
+        fromDateTime = dayjs().utc().startOf('month');
+        toDateTime = dayjs().utc().endOf('month');
+      },
+      last_month: () => {
+        fromDateTime = dayjs().utc().subtract(1, 'month').startOf('month');
+        toDateTime = dayjs().utc().subtract(1, 'month').endOf('month');
+      },
+      last_30_days: () => {
+        fromDateTime = dayjs().utc().subtract(29, 'day').startOf('day');
+        toDateTime = dayjs().utc().endOf('day');
+      },
+      this_year: () => {
+        fromDateTime = dayjs().utc().startOf('year');
+        toDateTime = dayjs().utc().endOf('year');
+      },
+      all_time: () => {
+        fromDateTime = dayjs().utc().subtract(100, 'year').startOf('day');
+        toDateTime = dayjs().utc().endOf('day');
+      },
+    };
+    if (value && actions[value as keyof typeof actions]) {
+      actions[value as keyof typeof actions]();
+      form.setFieldsValue({ range: [fromDateTime, toDateTime] });
+      handleSubmit(form.getFieldsValue());
+    }
+    $currentRange(value);
+  };
   return (
     <Card size="small">
-      <Form form={form} layout="vertical" onFinish={handleSubmit}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+        initialValues={{
+          range: initialRange,
+        }}
+      >
         <Row gutter={[12, 12]}>
           <Col xs={24}>
-            <Form.Item rules={[{ required: true, message: 'Вкажіть дату та час' }]} name="range">
-              <DatePicker.RangePicker
-                placeholder={['Від', 'До']}
-                style={{ width: '100%' }}
-                showTime
-              />
-            </Form.Item>
+            <Space direction="vertical" size={12} style={{ width: '100%' }}>
+              <Segmented onChange={handlePresetRange} options={datePreset} value={currentRange} />
+              <Form.Item rules={[{ required: true, message: 'Вкажіть дату та час' }]} name="range">
+                <DatePicker.RangePicker
+                  placeholder={['Від', 'До']}
+                  style={{ width: '100%' }}
+                  disabled={currentRange !== 'custom'}
+                  showTime
+                />
+              </Form.Item>
+            </Space>
           </Col>
           <Col xs={24} md={12} lg={6}>
             <Form.Item name="search">
