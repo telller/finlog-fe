@@ -1,8 +1,7 @@
-import { Flex, Table, Tag, Tooltip } from 'antd';
+import { Flex, Table, Tag } from 'antd';
 import type { UIEvent } from 'react';
 import dayjs from 'dayjs';
-import { TruncatedText, TableActions } from '@src/components';
-import { formatDateLabel } from '@src/utils/formatDateLabel';
+import { TableActions } from '@src/components';
 import type { Expense } from '@src/types/expenses';
 import { useTagsState } from '@src/state';
 import './ExpensesTable.css';
@@ -28,13 +27,17 @@ const ExpensesTable = ({ onLoadMore, onDelete, expenses, loading, onEdit }: Expe
     {
       title: 'Дата',
       dataIndex: 'spendAt',
-      render: (spendAt: string) => (
-        <Tooltip title={dayjs(spendAt).format('DD.MM HH:mm')}>{formatDateLabel(spendAt)}</Tooltip>
-      ),
+      width: 200,
+      render: (spendAt: string) => dayjs(spendAt).format('DD.MM.YYYY'),
+    },
+    {
+      title: 'Опис',
+      dataIndex: 'description',
     },
     {
       title: 'Категорія',
       dataIndex: 'tagId',
+      width: 200,
       render: (tagId: string) => {
         const tag = tagsMap.get(tagId);
         return (
@@ -47,12 +50,8 @@ const ExpensesTable = ({ onLoadMore, onDelete, expenses, loading, onEdit }: Expe
     {
       title: 'Сумма',
       dataIndex: 'amount',
+      width: 200,
       render: (amount: string) => `-${amount} UAH`,
-    },
-    {
-      title: 'Опис',
-      dataIndex: 'description',
-      render: (description: string) => <TruncatedText text={description} />,
     },
     {
       title: '',

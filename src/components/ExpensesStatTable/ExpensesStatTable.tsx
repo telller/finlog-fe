@@ -1,7 +1,5 @@
-import { Flex, Table, Tag, Tooltip } from 'antd';
+import { Flex, Table, Tag } from 'antd';
 import dayjs from 'dayjs';
-import { formatDateLabel } from '@src/utils/formatDateLabel';
-import { TruncatedText } from '@src/components';
 import type { Expense } from '@src/types';
 import { useTagsState } from '@src/state';
 import './ExpensesStatTable.css';
@@ -17,13 +15,17 @@ const ExpensesStatTable = ({ expenses, loading }: ExpensesTableProps) => {
     {
       title: 'Дата',
       dataIndex: 'spendAt',
-      render: (spendAt: string) => (
-        <Tooltip title={dayjs(spendAt).format('DD.MM HH:mm')}>{formatDateLabel(spendAt)}</Tooltip>
-      ),
+      width: 200,
+      render: (spendAt: string) => dayjs(spendAt).format('DD.MM.YYYY'),
+    },
+    {
+      title: 'Опис',
+      dataIndex: 'description',
     },
     {
       title: 'Категорія',
       dataIndex: 'tagId',
+      width: 200,
       render: (tagId: string) => {
         const tag = tagsMap.get(tagId);
         return (
@@ -36,12 +38,8 @@ const ExpensesStatTable = ({ expenses, loading }: ExpensesTableProps) => {
     {
       title: 'Сумма',
       dataIndex: 'amount',
+      width: 200,
       render: (amount: string) => `-${amount} UAH`,
-    },
-    {
-      title: 'Опис',
-      dataIndex: 'description',
-      render: (description: string) => <TruncatedText text={description} />,
     },
   ];
   return (
