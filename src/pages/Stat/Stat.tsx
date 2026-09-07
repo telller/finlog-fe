@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Flex } from 'antd';
 import dayjs from 'dayjs';
-import { ExpensesStatTable, GeneralStatWidget, StatFilter } from '@src/components';
+import {
+  ExpensesTagsBarChart,
+  ExpensesStatTable,
+  GeneralStatWidget,
+  StatFilter,
+} from '@src/components';
 import {
   useExpensesStatListState,
   useDaysStatState,
@@ -51,11 +56,9 @@ function Stat() {
   return (
     <Flex gap="middle" vertical className="stat-container">
       <StatFilter onApply={(filter: ExpenseStatFilterDto) => setStatFilter(filter)} />
-      <GeneralStatWidget generalStat={generalStat} />
-      {/*<Flex>*/}
-      {/*  <ExpensesPieChart />*/}
-      {/*  <ExpensesBarChart />*/}
-      {/*</Flex>*/}
+      <GeneralStatWidget />
+      <ExpensesTagsBarChart />
+      {/*<ExpensesTagsBarChart />*/}
       <ExpensesStatTable expenses={expensesStatList} loading={expLoading} />
     </Flex>
   );

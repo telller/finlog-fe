@@ -1,11 +1,8 @@
 import { Card, Col, Row, Statistic } from 'antd';
-import type { GeneralStat } from '@src/types';
+import { useGeneralStatState } from '@src/state';
 
-interface GeneralStatWidgetProps {
-  generalStat: GeneralStat;
-}
-
-const GeneralStatWidget = ({ generalStat }: GeneralStatWidgetProps) => {
+const GeneralStatWidget = () => {
+  const { generalStat } = useGeneralStatState();
   return (
     <Row gutter={16}>
       <Col span={6}>
