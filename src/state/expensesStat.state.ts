@@ -1,7 +1,13 @@
 import { create } from 'zustand';
-import { getTagsStat, getDaysStat, getExpensesStatList } from '@src/services';
+import { getTagsStat, getDaysStat, getExpensesStatList, getGeneralStat } from '@src/services';
 import type { ExpenseStatFilterDto, GetExpenseStatListDto } from '@src/dto';
-import type { DayStat, Expense, TagStat } from '@src/types';
+import type { DayStat, Expense, GeneralStat, TagStat } from '@src/types';
+
+interface GeneralStatState {
+  getGeneralStat: (data: ExpenseStatFilterDto) => Promise<void>;
+  generalStat: GeneralStat;
+  loading: boolean;
+}
 
 interface TagsStatState {
   getTagsStat: (data: ExpenseStatFilterDto) => Promise<void>;
@@ -20,6 +26,22 @@ interface ExpensesStatListState {
   expensesStatList: Expense[];
   loading: boolean;
 }
+
+export const useGeneralStatState = create<GeneralStatState>((set) => ({
+  generalStat: {
+    total: 0,
+    average: 0,
+    averagePerDay: 0,
+    transactions: 0,
+  },
+  loading: true,
+  getGeneralStat: async (data: ExpenseStatFilterDto) => {
+    console.log(data);
+    set({ loading: true });
+    const { data: generalStat } = await getGeneralStat(data);
+    set({ generalStat, loading: false });
+  },
+}));
 
 export const useTagsStatState = create<TagsStatState>((set) => ({
   tagsStat: [],

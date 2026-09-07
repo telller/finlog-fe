@@ -2,6 +2,10 @@ import axios from './axios.service';
 import qs from 'query-string';
 import type { ExpenseStatFilterDto, GetExpenseStatListDto } from '@src/dto';
 
+export const getGeneralStat = (query: ExpenseStatFilterDto) => {
+  return axios.get(`/stat/general?${qs.stringify(query)}`);
+};
+
 export const getTagsStat = (query: ExpenseStatFilterDto) => {
   return axios.get(`/stat/tags-stat?${qs.stringify(query)}`);
 };

@@ -1,3 +1,4 @@
+export * from './generalStat';
 export * from './expenses';
 export * from './tagStat';
 export * from './dayStat';
